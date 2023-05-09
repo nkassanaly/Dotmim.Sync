@@ -288,6 +288,43 @@ namespace Dotmim.Sync
                 this.Rows.Add(row);
             }
         }
+        public void LoadSqlite(DbDataReader reader)
+        {
+            var readerFieldCount = reader.FieldCount;
+
+            if (readerFieldCount == 0 || !reader.HasRows)
+                return;
+
+            if (this.Columns.Count == 0)
+            {
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    var columnName = reader.GetName(i);
+                    var columnType = reader.GetFieldType(i);
+                    this.Columns.Add(columnName, columnType);
+                }
+            }
+
+            while (reader.Read())
+            {
+                var row = this.NewRow();
+
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    var columnName = reader.GetName(i);
+                    var columnValueObject = columnName switch
+                    {
+                        "sync_scope_id" => reader.GetGuid(i),
+                        "scope_last_sync" => reader.GetDateTime(i),
+                        _ => reader.GetValue(i)
+                    };
+
+                    row[columnName] = columnValueObject;
+                }
+
+                this.Rows.Add(row);
+            }
+        }
 
         /// <summary>
         /// Check if a column name is a primary key

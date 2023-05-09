@@ -227,7 +227,7 @@ namespace Dotmim.Sync.Sqlite
 
             using (DbCommand command = connection.CreateCommand())
             {
-                command.CommandText = $"drop table if exist {pTableName}";
+                command.CommandText = $"drop table if exists {pTableName}";
                 command.Transaction = transaction;
 
                 await command.ExecuteNonQueryAsync().ConfigureAwait(false);
@@ -240,7 +240,7 @@ namespace Dotmim.Sync.Sqlite
 
             using (DbCommand dbCommand = connection.CreateCommand())
             {
-                dbCommand.CommandText = $"drop trigger if exist {triggerName}";
+                dbCommand.CommandText = $"drop trigger if exists {triggerName}";
                 dbCommand.Transaction = transaction;
 
                 await dbCommand.ExecuteNonQueryAsync().ConfigureAwait(false);

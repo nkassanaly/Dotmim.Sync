@@ -105,7 +105,7 @@ namespace Dotmim.Sync.Sqlite
             sqlCommand.Transaction = transaction;
 
             using (var reader = await sqlCommand.ExecuteReaderAsync().ConfigureAwait(false))
-                syncTable.Load(reader);
+                syncTable.LoadSqlite(reader);
 
             if (!alreadyOpened)
                 connection.Close();
